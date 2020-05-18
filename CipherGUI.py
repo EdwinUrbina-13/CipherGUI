@@ -15,13 +15,44 @@ def menuBar():
     fileMenu = tk.Menu(menubar, tearoff=0)
 
     menubar.add_cascade(label="File", menu=fileMenu)
+    fileMenu.add_command(label="New")
     fileMenu.add_command(label="Open", command=selectFile)
+    fileMenu.add_command(label="Save as...", command=saveFile)
+    fileMenu.add_separator()
+    fileMenu.add_command(label="Exit", command=root.destroy)
+
+    editMenu = tk.Menu(menubar, tearoff=0)
+
+    menubar.add_cascade(label="Edit", menu=editMenu)
+    editMenu.add_command(label="Undo")
+    editMenu.add_command(label="Cut")
+    editMenu.add_command(label="Copy")
+    editMenu.add_command(label="Paste")
+
+    helpMenu = tk.Menu(menubar, tearoff=0)
+
+    menubar.add_cascade(label="Help", menu=helpMenu)
+    helpMenu.add_command(label="About...")
+    helpMenu.add_command(label="How does it work?")
+
+    cipherInfoMenu = tk.Menu(menubar, tearoff=0)
+
+    helpMenu.add_cascade(label="Cipher Options Info", menu=cipherInfoMenu)
+    cipherInfoMenu.add_command(label="Morse Code")
 
 
 def selectFile():
     fileName = tk.filedialog.askopenfilename(title="Select a file", filetypes=[("txt Files", "*.txt")])
     fileEntry.delete(0, "end")
     fileEntry.insert(0, fileName)
+
+
+def saveFile():
+    fileSave = tk.filedialog.asksaveasfile(mode='w', defaultextension="*.txt")
+    fileSave.write("Original text: \n")
+    fileSave.write(executeText.get("1.0", "end") + "\n")
+    fileSave.write("Encrypted or Decrypted text: \n")
+    fileSave.write(answerText.get("1.0", "end"))
 
 
 def insertFile():
@@ -101,10 +132,12 @@ def cipherWindows():
     tempFrame = tk.Frame(root, height=70, width=250)
     tempFrame.place(x=49, y=255)
 
+    global key1Entry
+
     if anOption == "Double Transposition":
         key1Label = tk.Label(tempFrame, text='Key 1:')
         key1Label.place(x=0, y=0)
-        global key1Entry
+
         key1Entry = tk.Entry(tempFrame)
         key1Entry.place(x=40, y=0)
 
