@@ -19,7 +19,7 @@ def menuBar():
     fileMenu = tk.Menu(menubar, tearoff=0)
 
     menubar.add_cascade(label="File", menu=fileMenu)
-    fileMenu.add_command(label="New", command=lambda: os.system('CipherGUI.py'))
+    fileMenu.add_command(label="New", command=lambda: os.startfile(r'CipherGUI.py'))
     fileMenu.add_command(label="Open", command=selectFile)
     fileMenu.add_command(label="Save as...", command=saveFile)
     fileMenu.add_separator()
