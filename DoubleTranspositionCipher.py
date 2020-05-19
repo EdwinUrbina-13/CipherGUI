@@ -2,7 +2,6 @@ from math import ceil
 from math import floor
 from collections import OrderedDict
 import random
-import string
 
 
 class DoubleTranspositionCipher:
@@ -30,13 +29,11 @@ class DoubleTranspositionCipher:
         return self.key2
 
     def transpose(self, aText, key):
-        """The transposed method makes a 2d matrix were it makes the first row your key.
+        """The transposed method makes a 2d array were it makes the first row your key.
         After the key is set, it takes the given text and starts filling the rest of the matrix.
         Once the matrix is filled, it starts taking out a whole column at a time in alphabetical order and adds it to a string.
         The new text will be all distorted because everything will be out of order."""
 
-        # Variable to hold a list of ascii letters
-        alphabet = string.ascii_letters
         # Sets colums to the ceiling value of the length of the key
         columns = ceil(len(key))
         # Sets the rows to the ceiling result of the division of the legth of text by the length of key plus one
@@ -44,8 +41,8 @@ class DoubleTranspositionCipher:
         # nextLetter works as a counter to move throug the letters in a row
         nextLetter = 0
 
-        # Creates a 2d matrix and assigns random letters taken from the 'alphabet' list
-        grid = [[random.choice(alphabet) for i in range(columns)] for j in range(rows)]
+        # Creates a 2d array and assigns random letters taken from the 'alphabet' list
+        grid = [["ñ" for i in range(columns)] for j in range(rows)]
 
         # Makes the key word the first row
         for i in range(columns):
@@ -88,16 +85,18 @@ class DoubleTranspositionCipher:
         """Runs an transpose using the first given key. Then it runs another transpose using the second key.
     Finally it returns the encrypted text"""
 
-        return self.transpose(self.transpose(self.text, self.key1), self.key2)
+        encrypted_text = self.transpose(self.transpose(self.text, self.key1), self.key2)
+
+        # encrypted_text = encrypted_text.replace("ñ", "")
+
+        return encrypted_text
 
     def unTranspose(self, aText, key):
-        """The untransposed method makes a 2d matrix were it makes the first column your key sorted.
+        """The untransposed method makes a 2d array were it makes the first column your key sorted.
         After the sorted key is set, it takes the given text and starts filling the rest of the matrix.
         Once the matrix is filled, it starts taking out row by row the letters in the order of the
         original key and adds them to a string. The new text will be a cohesive text unless it has been encrypted more than once."""
 
-        # Variable to hold a list of ascii letters
-        alphabet = string.ascii_letters
         # Sets the columns to the ceiling result of the division of the legth of text by the length of key plus one
         columns = floor(len(aText) / len(key)) + 1
         # Sets rows to the ceiling value of the length of the key
@@ -108,8 +107,8 @@ class DoubleTranspositionCipher:
         # Sorts the key in alphabetical order
         key_sorted = "".join(sorted(key))
 
-        # Creates a 2d matrix and assigns random letters taken from the 'alphabet' list
-        grid = [[random.choice(alphabet) for i in range(columns)] for j in range(rows)]
+        # Creates a 2d array and assigns random letters taken from the 'alphabet' list
+        grid = [["ñ" for i in range(columns)] for j in range(rows)]
 
         # Makes the sorted key word the first column
         for i in range(rows):
@@ -156,9 +155,11 @@ class DoubleTranspositionCipher:
 
     def decrypt(self):
         """Runs an untranspose using the second given key. Then it runs another untranspose using the first key.
-    Finally it returns the decrypted text. **May have some trash at the end due to having to fill the matrix**"""
+    Finally it returns the decrypted text."""
 
         decrypted_text = self.unTranspose(self.unTranspose(self.text, self.key2), self.key1)
+
+        decrypted_text = decrypted_text.replace("ñ", "")
 
         return decrypted_text
 
