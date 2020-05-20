@@ -103,11 +103,11 @@ def test():
     print("Original text:")
     print(aString, "\n")
 
-    sentence = SkipCipher(aString, 3)
+    sentence = SkipCipher(aString, 7)
     encrypted_sentence = sentence.encrypt()
 
     aString = encrypted_sentence
-    decrypt_text = SkipCipher(aString, 3)
+    decrypt_text = SkipCipher(aString, 7)
 
     print("Encrypted:")
     print(encrypted_sentence, "\n")

@@ -60,7 +60,8 @@ class CaesarCipher:
     def decrypt(self):
         """Runs a decrypt Caesar Cipher using the given key. Finally it returns the decrypted text."""
         #self.key is negative beuase if it is being decrypted the key goes backwards in alphabet
-        decrypted_text = self.caesar(self.text, -self.key)
+        key = -int(self.key)
+        decrypted_text = self.caesar(self.text, key)
         return decrypted_text
 
 def test():
