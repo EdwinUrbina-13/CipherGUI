@@ -197,6 +197,7 @@ def mainWindow():
 
 
 def cipherWindows(option):
+    global tempFrame
     tempFrame = tk.Frame(root, height=70, width=250)
     tempFrame.place(x=49, y=255)
 
@@ -208,6 +209,10 @@ def cipherWindows(option):
     global key2Entry
     key2Entry = tk.Entry(tempFrame)
 
+    global errorMessage
+    errorMessage = tk.StringVar()
+    global errorLabel
+    errorLabel = tk.Label(tempFrame, textvariable=errorMessage)
 
     if option == "Double Transposition":
         key1Label.place(x=0, y=0)
@@ -236,6 +241,8 @@ def encryptText(choice):
     aText = executeText.get("1.0", "end")
     aText = aText[:-1]
 
+    flag = False
+
     if choice == "Double Transposition" and aText != "":
         encryptedText = DoubleTranspositionCipher(aText, key1Entry.get(), key2Entry.get())
 
@@ -250,12 +257,20 @@ def encryptText(choice):
 
     elif choice == "Skip" and aText !="":
         encryptedText = SkipCipher(aText, key1Entry.get())
+        if encryptedText.coprime(len(aText), int(key1Entry.get())) == False:
+            flag = True
+            errorMessage.set("Error. The number must be coprime\n to the length of text.")
+            errorLabel.place(x=0, y=20)
+        else:
+            errorLabel.place_forget()
 
     elif choice == "Caesar" and aText !="":
         encryptedText = CaesarCipher(aText, key1Entry.get())
 
-    answerText.delete("1.0", "end")
-    answerText.insert("1.0", encryptedText.encrypt())
+
+    if(aText != "" and flag == False):
+        answerText.delete("1.0", "end")
+        answerText.insert("1.0", encryptedText.encrypt())
 
 
 def decryptText(choice):
@@ -282,7 +297,6 @@ def decryptText(choice):
 
     answerText.delete("1.0", "end")
     answerText.insert("1.0", decryptedText.decrypt())
-
 
 def main():
     mainWindow()
