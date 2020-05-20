@@ -161,19 +161,20 @@ def cipherWindows(option):
     tempFrame = tk.Frame(root, height=70, width=250)
     tempFrame.place(x=49, y=255)
 
+    key1Label = tk.Label(tempFrame, text='Key 1:')
     global key1Entry
+    key1Entry = tk.Entry(tempFrame)
+
+    key2Label = tk.Label(tempFrame, text='Key 2:')
+    global key2Entry
+    key2Entry = tk.Entry(tempFrame)
+
 
     if option == "Double Transposition":
-        key1Label = tk.Label(tempFrame, text='Key 1:')
         key1Label.place(x=0, y=0)
-
-        key1Entry = tk.Entry(tempFrame)
         key1Entry.place(x=40, y=0)
 
-        key2Label = tk.Label(tempFrame, text='Key 2:')
         key2Label.place(x=0, y=20)
-        global key2Entry
-        key2Entry = tk.Entry(tempFrame)
         key2Entry.place(x=40, y=20)
 
     else:
