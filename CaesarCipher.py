@@ -10,7 +10,7 @@ class CaesarCipher:
         # Assigns text to self.text
         self.text = text
         # Assigns key to self.key
-        self.key = int(key)
+        self.key = key
 
     def getText(self):
         """Returns the text given by the user"""
@@ -24,6 +24,7 @@ class CaesarCipher:
     def caesar(self, text, key):
         """The Caesar Cipher is a shift cipher, one of the most easy and most famous encryption systems.
         It uses the substitution of a letter by another one further in the alphabet."""
+        key = int(key)
         aString = ''
 
         for symbol in text: #Verify if string character is an alphabet letter

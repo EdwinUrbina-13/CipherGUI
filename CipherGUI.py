@@ -305,6 +305,13 @@ def encryptText(choice):
 
     elif choice == "Caesar" and aText !="":
         encryptedText = CaesarCipher(aText, key1Entry.get())
+        if key1Entry.get().isdigit() == False:
+            flag = True
+            errorMessage.set("Error. Key must a digit.")
+            errorLabel.place(x=0, y=20)
+        else:
+            errorLabel.place_forget()
+
 
 
     if(aText != "" and flag == False):
