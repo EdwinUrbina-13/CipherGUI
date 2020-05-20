@@ -75,7 +75,7 @@ def selectFile():
 
 #Opens file explorer to save resulting text
 def saveFile():
-    fileSave = tk.filedialog.asksaveasfile(mode='w', defaultextension=[("txt Files", "*.txt")])
+    fileSave = tk.filedialog.asksaveasfile(mode='w', defaultextension=("txt File","*.txt"), filetypes=[("txt File", "*.txt")])
     fileSave.write("Original text: \n")
     fileSave.write(executeText.get("1.0", "end") + "\n")
     fileSave.write("Encrypted or Decrypted text: \n")
@@ -269,11 +269,14 @@ def cipherWindows(option):
 
 #Function to encrypt text
 def encryptText(choice):
+    #Pass text in entry text box to 'aText' variable
     aText = executeText.get("1.0", "end")
     aText = aText[:-1]
 
+    #Flag to detect errors in input of keys
     flag = False
 
+    #If statement to make encrypted text into the type of cipher selected
     if choice == "Double Transposition" and aText != "":
         encryptedText = DoubleTranspositionCipher(aText, key1Entry.get(), key2Entry.get())
 
@@ -289,8 +292,10 @@ def encryptText(choice):
     elif choice == "Skip" and aText !="":
         encryptedText = SkipCipher(aText, key1Entry.get())
 
+        #Detects if key entered is a number
         if key1Entry.get().isdigit() == True:
 
+            #If key is not coprime it shows error
             if encryptedText.coprime(len(aText), int(key1Entry.get())) == False:
                 flag = True
                 errorMessage.set("Error. Key must be a coprime\n number to the length of text.")
@@ -299,12 +304,15 @@ def encryptText(choice):
                 errorLabel.place_forget()
 
         else:
+            #If key is not a number shows error
             flag = True
             errorMessage.set("Error. Key must a digit.")
             errorLabel.place(x=0, y=20)
 
     elif choice == "Caesar" and aText !="":
         encryptedText = CaesarCipher(aText, key1Entry.get())
+
+        #If key is not a number it shows error
         if key1Entry.get().isdigit() == False:
             flag = True
             errorMessage.set("Error. Key must a digit.")
@@ -313,15 +321,19 @@ def encryptText(choice):
             errorLabel.place_forget()
 
 
-
+    #If there is no flag in there is a text than the text is encrypted
     if(aText != "" and flag == False):
         answerText.delete("1.0", "end")
         answerText.insert("1.0", encryptedText.encrypt())
 
 
+#Function to decrypt text
 def decryptText(choice):
     aText = executeText.get("1.0", "end")
     aText = aText[:-1]
+
+    # Flag to detect errors in input of keys
+    flag = False
 
     if choice == "Double Transposition" and aText != "":
         decryptedText = DoubleTranspositionCipher(aText, key1Entry.get(), key2Entry.get())
@@ -338,15 +350,43 @@ def decryptText(choice):
     elif choice == "Skip" and aText != "":
         decryptedText = SkipCipher(aText, key1Entry.get())
 
+        # Detects if key entered is a number
+        if key1Entry.get().isdigit() == True:
+
+            # If key is not coprime it shows error
+            if decryptedText.coprime(len(aText), int(key1Entry.get())) == False:
+                flag = True
+                errorMessage.set("Error. Key must be a coprime\n number to the length of text.")
+                errorLabel.place(x=0, y=20)
+            else:
+                errorLabel.place_forget()
+
+        else:
+            # If key is not a number shows error
+            flag = True
+            errorMessage.set("Error. Key must a digit.")
+            errorLabel.place(x=0, y=20)
+
     elif choice == "Caesar" and aText != "":
         decryptedText = CaesarCipher(aText, key1Entry.get())
 
-    answerText.delete("1.0", "end")
-    answerText.insert("1.0", decryptedText.decrypt())
+        # If key is not a number it shows error
+        if key1Entry.get().isdigit() == False:
+            flag = True
+            errorMessage.set("Error. Key must a digit.")
+            errorLabel.place(x=0, y=20)
+        else:
+            errorLabel.place_forget()
 
+    #If there is no flag in there is a text than the text is encrypted
+    if (aText != "" and flag == False):
+        answerText.delete("1.0", "end")
+        answerText.insert("1.0", decryptedText.decrypt())
+
+#Main program to run
 def main():
     mainWindow()
     root.mainloop()
 
-
+#Runs program
 main()
