@@ -257,12 +257,20 @@ def encryptText(choice):
 
     elif choice == "Skip" and aText !="":
         encryptedText = SkipCipher(aText, key1Entry.get())
-        if encryptedText.coprime(len(aText), int(key1Entry.get())) == False:
-            flag = True
-            errorMessage.set("Error. The number must be coprime\n to the length of text.")
-            errorLabel.place(x=0, y=20)
+
+        if key1Entry.get().isdigit() == True:
+
+            if encryptedText.coprime(len(aText), int(key1Entry.get())) == False:
+                flag = True
+                errorMessage.set("Error. Key must be a coprime\n number to the length of text.")
+                errorLabel.place(x=0, y=20)
+            else:
+                errorLabel.place_forget()
+
         else:
-            errorLabel.place_forget()
+            flag = True
+            errorMessage.set("Error. Key must a digit.")
+            errorLabel.place(x=0, y=20)
 
     elif choice == "Caesar" and aText !="":
         encryptedText = CaesarCipher(aText, key1Entry.get())

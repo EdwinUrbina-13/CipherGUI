@@ -6,7 +6,7 @@ class SkipCipher:
         # Assigns text to self.text
         self.text = text
         # Assigns key to self.key
-        self.key = int(key)
+        self.key = key
 
     def getText(self):
         """Returns the text given by the user"""
@@ -44,6 +44,7 @@ class SkipCipher:
     def skip(self, aString, key):
         """The Skip method reorders the letters of a
         message by selecting them after a N character jump. """
+        key = int(key)
         if self.coprime(len(aString), key)== True:
             length = len(aString)
             text = ''
@@ -68,6 +69,7 @@ class SkipCipher:
     def unSkip(self,aString, key):
         """The unSkip method reorders the letters of a
         message by indexing the message characters in order with the jump. """
+        key = int(key)
         if self.coprime(len(aString), key)== True:
             length = len(aString)
             decStr = []
