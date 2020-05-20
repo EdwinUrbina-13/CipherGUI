@@ -8,6 +8,8 @@ from DoubleTranspositionCipher import *
 from MorseCodeCipher import *
 from base64Cipher import *
 from VigenereCipher import *
+from SkipCipher import *
+from CaesarCipher import *
 
 
 global root
@@ -50,6 +52,8 @@ def menuBar():
     cipherInfoMenu.add_command(label="Double Transposition", command=lambda: cipherInfo(2))
     cipherInfoMenu.add_command(label="Base64", command=lambda: cipherInfo(3))
     cipherInfoMenu.add_command(label="Vigenere", command=lambda: cipherInfo(4))
+    cipherInfoMenu.add_command(label="Skip", command=lambda: cipherInfo(5))
+    cipherInfoMenu.add_command(label="Caesar", command=lambda: cipherInfo(6))
 
 
 def selectFile():
@@ -128,6 +132,20 @@ def cipherInfo(choice):
         The alphabet used at each point depends on a repeating keyword""")
         VigenereInfo.pack()
 
+    elif choice == 5:
+        SkipInfo = tk.Label(infoWindow, text=""" The skip cipher is a transposition cipher that consists of extracting
+         the letters of a message every n characters (by jumping n characters). 
+         When the end of the message is reached, resume at the beginning (loop). To decrypt the message the cipher 
+         reorders the letters of the message by indexing the message characters in order with the jump.
+         For encryption or decryption to work, it is necessary to use a jump value that is not prime with 
+         the length of the message.""")
+        SkipInfo.pack()
+
+    elif choice == 6:
+        CaesarInfo = tk.Label(infoWindow, text=""" Caesar cipher (or Caesar code) is a shift cipher, one of the most 
+        easy and most famous encryption systems. It uses the substitution of a letter by another one further in the 
+        alphabet.""")
+        CaesarInfo.pack()
 
 def mainWindow():
     menuBar()
@@ -157,7 +175,7 @@ def mainWindow():
     option = tk.StringVar()
     option.set("Choose")
 
-    dropMenu = tk.OptionMenu(root, option, "Morse Code", "Double Transposition", "Base64", "Vigenere")
+    dropMenu = tk.OptionMenu(root, option, "Morse Code", "Double Transposition", "Base64", "Vigenere", "Skip", "Caesar")
     dropMenu.place(x=370, y=70)
 
     optionButton = tk.Button(root, text="Select", command=lambda: cipherWindows(option.get()))
@@ -202,6 +220,13 @@ def cipherWindows(option):
         key1Label.place(x=0, y=0)
         key1Entry.place(x=40, y=0)
 
+    elif option == "Skip":
+        key1Label.place(x=0, y=0)
+        key1Entry.place(x=40, y=0)
+
+    elif option == "Caesar":
+        key1Label.place(x=0, y=0)
+        key1Entry.place(x=40, y=0)
 
     else:
         tempFrame.destroy
@@ -223,6 +248,12 @@ def encryptText(choice):
     elif choice == "Vigenere" and aText !="":
         encryptedText = VigenereCipher(aText, key1Entry.get())
 
+    elif choice == "Skip" and aText !="":
+        encryptedText = SkipCipher(aText, key1Entry.get())
+
+    elif choice == "Caesar" and aText !="":
+        encryptedText = CaesarCipher(aText, key1Entry.get())
+
     answerText.delete("1.0", "end")
     answerText.insert("1.0", encryptedText.encrypt())
 
@@ -242,6 +273,12 @@ def decryptText(choice):
 
     elif choice == "Vigenere" and aText != "":
         decryptedText = VigenereCipher(aText, key1Entry.get())
+
+    elif choice == "Skip" and aText != "":
+        decryptedText = SkipCipher(aText, key1Entry.get())
+
+    elif choice == "Caesar" and aText != "":
+        decryptedText = CaesarCipher(aText, key1Entry.get())
 
     answerText.delete("1.0", "end")
     answerText.insert("1.0", decryptedText.decrypt())
