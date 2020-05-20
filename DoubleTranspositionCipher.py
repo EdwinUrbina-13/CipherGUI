@@ -101,7 +101,7 @@ class DoubleTranspositionCipher:
         columns = floor(len(aText) / len(key)) + 1
         # Sets rows to the ceiling value of the length of the key
         rows = floor(len(key))
-        # nextLetter works as a counter to move throug the letters in a row
+        # nextLetter works as a counter to move through the letters in a row
         nextLetter = 0
 
         # Sorts the key in alphabetical order
