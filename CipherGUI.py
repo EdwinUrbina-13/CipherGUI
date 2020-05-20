@@ -6,6 +6,9 @@ import os
 
 from DoubleTranspositionCipher import *
 from MorseCodeCipher import *
+from base64Cipher import *
+from VigenereCipher import *
+
 
 global root
 root = tk.Tk()
@@ -45,6 +48,8 @@ def menuBar():
     helpMenu.add_cascade(label="Cipher Options Info", menu=cipherInfoMenu)
     cipherInfoMenu.add_command(label="Morse Code", command=lambda: cipherInfo(1))
     cipherInfoMenu.add_command(label="Double Transposition", command=lambda: cipherInfo(2))
+    cipherInfoMenu.add_command(label="Base64", command=lambda: cipherInfo(3))
+    cipherInfoMenu.add_command(label="Vigenere", command=lambda: cipherInfo(4))
 
 
 def selectFile():
@@ -107,6 +112,22 @@ def cipherInfo(choice):
         Alert *THE DECRYPTION OPTION ONLY WORKS WITH FILES ENCRYPTED BY THIS TOOL*""")
         dtInfo.pack()
 
+    elif choice == 3:
+        Base64Info = tk.Label(infoWindow, text="""Base64, also known as MIME encoding, translates binary into safe text. 
+        It is used to send attachments in email and to change small bits of unsafe high-character data into stuff that 
+        is a lot nicer for text-based system.""")
+        Base64Info.pack()
+
+    elif choice == 4:
+        VigenereInfo = tk.Label(infoWindow, text=""" Vigenere Cipher is a method of encrypting alphabetic text. 
+        It uses a simple form of polyalphabetic substitution. A polyalphabetic cipher is any cipher based on substitution, 
+        using multiple substitution alphabets. To encrypt, a table of alphabets can be used, termed a tabula recta, 
+        Vigenère square or Vigenère table. It has the alphabet written out 26 times in different rows, each alphabet 
+        shifted cyclically to the left compared to the previous alphabet, corresponding to the 26 possible Caesar 
+        ciphers. At different points in the encryption process, the cipher uses a different alphabet from one of the rows. 
+        The alphabet used at each point depends on a repeating keyword""")
+        VigenereInfo.pack()
+
 
 def mainWindow():
     menuBar()
@@ -136,7 +157,7 @@ def mainWindow():
     option = tk.StringVar()
     option.set("Choose")
 
-    dropMenu = tk.OptionMenu(root, option, "Morse Code", "Double Transposition")
+    dropMenu = tk.OptionMenu(root, option, "Morse Code", "Double Transposition", "Base64", "Vigenere")
     dropMenu.place(x=370, y=70)
 
     optionButton = tk.Button(root, text="Select", command=lambda: cipherWindows(option.get()))
@@ -177,6 +198,11 @@ def cipherWindows(option):
         key2Label.place(x=0, y=20)
         key2Entry.place(x=40, y=20)
 
+    elif option == "Vigenere":
+        key1Label.place(x=0, y=0)
+        key1Entry.place(x=40, y=0)
+
+
     else:
         tempFrame.destroy
 
@@ -191,6 +217,12 @@ def encryptText(choice):
     elif choice == "Morse Code" and aText != "":
         encryptedText = MorseCodeCipher(aText)
 
+    elif choice == "Base64" and aText !="":
+        encryptedText = base64cipher(aText)
+
+    elif choice == "Vigenere" and aText !="":
+        encryptedText = VigenereCipher(aText, key1Entry.get())
+
     answerText.delete("1.0", "end")
     answerText.insert("1.0", encryptedText.encrypt())
 
@@ -204,6 +236,12 @@ def decryptText(choice):
 
     elif choice == "Morse Code" and aText != "":
         decryptedText = MorseCodeCipher(aText)
+
+    elif choice == "Base64" and aText != "":
+        decryptedText = base64cipher(aText)
+
+    elif choice == "Vigenere" and aText != "":
+        decryptedText = VigenereCipher(aText, key1Entry.get())
 
     answerText.delete("1.0", "end")
     answerText.insert("1.0", decryptedText.decrypt())
