@@ -4,6 +4,7 @@ import tkinter.scrolledtext as tkScroll
 from tkinter import filedialog
 import os
 
+#Importing all the cipher classes
 from DoubleTranspositionCipher import *
 from MorseCodeCipher import *
 from base64Cipher import *
@@ -11,18 +12,21 @@ from VigenereCipher import *
 from SkipCipher import *
 from CaesarCipher import *
 
-
+#Creates a global window and names it 'Cipher Buddy'
 global root
 root = tk.Tk()
 root.title('Cipher Buddy')
 
-
+#Creating a menu bar
 def menuBar():
+    #Creates main menu bar
     menubar = tk.Menu(root)
     root.config(menu=menubar)
 
+    #Creates submenu 'File'
     fileMenu = tk.Menu(menubar, tearoff=0)
 
+    #Adds options New, Open, Save as..., and Exit to 'File' submenu
     menubar.add_cascade(label="File", menu=fileMenu)
     fileMenu.add_command(label="New", command=lambda: os.startfile(r'CipherGUI.py'))
     fileMenu.add_command(label="Open", command=selectFile)
@@ -30,8 +34,10 @@ def menuBar():
     fileMenu.add_separator()
     fileMenu.add_command(label="Exit", command=root.destroy)
 
+    #Creates submenu 'Edit'
     editMenu = tk.Menu(menubar, tearoff=0)
 
+    #Adds options Undo,Redo, Cut, Copy and Paste to 'Edit' submenu
     menubar.add_cascade(label="Edit", menu=editMenu)
     editMenu.add_command(label="Undo", command=lambda: executeText.edit_undo())
     editMenu.add_command(label="Redo", command=lambda: executeText.edit_redo())
@@ -39,14 +45,18 @@ def menuBar():
     editMenu.add_command(label="Copy", command=lambda: root.focus_get().event_generate('<<Copy>>'))
     editMenu.add_command(label="Paste", command=lambda: root.focus_get().event_generate('<<Paste>>'))
 
+    #Creates submenu
     helpMenu = tk.Menu(menubar, tearoff=0)
 
+    #Add option About and How does it work?
     menubar.add_cascade(label="Help", menu=helpMenu)
     helpMenu.add_command(label="About...", command=lambda: infoProgram(1))
     helpMenu.add_command(label="How does it work?", command=lambda: infoProgram(2))
 
+    #Creats a submenu inside the submenu 'Help'
     cipherInfoMenu = tk.Menu(menubar, tearoff=0)
 
+    #Adds option to view info of the chosen cipher
     helpMenu.add_cascade(label="Cipher Options Info", menu=cipherInfoMenu)
     cipherInfoMenu.add_command(label="Morse Code", command=lambda: cipherInfo(1))
     cipherInfoMenu.add_command(label="Double Transposition", command=lambda: cipherInfo(2))
@@ -56,12 +66,14 @@ def menuBar():
     cipherInfoMenu.add_command(label="Caesar", command=lambda: cipherInfo(6))
 
 
+#Opens file explorer to choose a text file to encrypt or decrypt
 def selectFile():
     fileName = tk.filedialog.askopenfilename(title="Select a file", filetypes=[("txt Files", "*.txt")])
     fileEntry.delete(0, "end")
     fileEntry.insert(0, fileName)
 
 
+#Opens file explorer to save resulting text
 def saveFile():
     fileSave = tk.filedialog.asksaveasfile(mode='w', defaultextension=[("txt Files", "*.txt")])
     fileSave.write("Original text: \n")
@@ -70,6 +82,7 @@ def saveFile():
     fileSave.write(answerText.get("1.0", "end"))
 
 
+#Adds text in selected file into the text entry block
 def insertFile():
     aFile = open(fileEntry.get())
     fileText = aFile.read()
@@ -78,7 +91,7 @@ def insertFile():
 
     aFile.close()
 
-
+#Displays information from the selected option in Help (About, How does it work?)
 def infoProgram(choice):
     infoWindow = tk.Tk()
 
@@ -98,6 +111,7 @@ def infoProgram(choice):
         howTo.pack()
 
 
+#Displays info from selected cipher in Chiper Option Info
 def cipherInfo(choice):
     infoWindow = tk.Tk()
 
@@ -147,55 +161,71 @@ def cipherInfo(choice):
         alphabet.""")
         CaesarInfo.pack()
 
+#Creates the main window of the GUI
 def mainWindow():
+    #Runs the menu bar
     menuBar()
-
+    #Sets dimensions for canvas
     HEIGHT = 500
     WIDTH = 700
 
+    #Sets canvas
     canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
     canvas.pack()
 
+    #Creates label to instruct user of options to enter text
     entryLabel = tk.Label(root, text='Enter text or load a text file:')
     entryLabel.place(x=50, y=60)
 
+    #Creates label to instruct user where he can write his programs path
     fileLabel = tk.Label(root, text='File:')
     fileLabel.place(x=50, y=80)
 
+    #Creates an entry to type file path
     global fileEntry
     fileEntry = tk.Entry(root)
     fileEntry.place(x=80, y=78)
 
+    #Creates button that inserts file in text entry block
     fileButton = tk.Button(root, text="Insert", command=insertFile)
     fileButton.place(x=210, y=70)
 
+    #Creates label that indicates that this is the cipher option drop down menu
     optionLabel = tk.Label(root, text="Cipher Options:")
     optionLabel.place(x=275, y=78)
 
+    #Creates default cipher option
     option = tk.StringVar()
     option.set("Choose")
 
+    #Creates drop down menu with cipher options
     dropMenu = tk.OptionMenu(root, option, "Morse Code", "Double Transposition", "Base64", "Vigenere", "Skip", "Caesar")
     dropMenu.place(x=370, y=70)
 
+    #Creates button to select cipher option and update window depending on the cipher requirements
     optionButton = tk.Button(root, text="Select", command=lambda: cipherWindows(option.get()))
     optionButton.place(x=530, y=72)
 
+    #Creates entry text box to place text to encrypt or decrypt text
     global executeText
     executeText = tkScroll.ScrolledText(root, undo=True)
     executeText.place(x=50, y=100, height=150, width=600)
 
+    #Creates entry text box to place result of encryption or decryption
     global answerText
     answerText = tkScroll.ScrolledText(root, undo=True)
     answerText.place(x=50, y=325, height=150, width=600)
 
+    #Creates encryption button to encrypt text
     encryptButton = tk.Button(root, text="Encrypt", command=lambda: encryptText(option.get()))
     encryptButton.place(x=295, y=260)
 
+    #Creates decryption button to encrypt text
     decryptButton = tk.Button(root, text="Decrypt", command=lambda: decryptText(option.get()))
     decryptButton.place(x=355, y=260)
 
 
+#Function that updates the main window depending on the cipher chosen
 def cipherWindows(option):
     global tempFrame
     tempFrame = tk.Frame(root, height=70, width=250)
@@ -237,6 +267,7 @@ def cipherWindows(option):
         tempFrame.destroy
 
 
+#Function to encrypt text
 def encryptText(choice):
     aText = executeText.get("1.0", "end")
     aText = aText[:-1]
