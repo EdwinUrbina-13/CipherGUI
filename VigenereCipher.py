@@ -3,18 +3,22 @@ class VigenereCipher:
     alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     def __init__(self, text, key):
+        """"""
         self.text = text.upper()
         self.key = key
 
     def edKey(self, key):
+        """"""
         self.key = key.upper()
         return self.key
 
     def text_length(self):
+        """"""
         self.t_length = len(self.text)
         return self.t_length
 
     def expand_key(self, key):
+        """"""
         # This function cycles the key and appends itself until its length is equal or longer than the encrypted text
         self.expanded_key = self.key
         self.key_length = len(self.expanded_key)
@@ -27,6 +31,7 @@ class VigenereCipher:
             return (self.expanded_key)
 
     def encrypt(self):
+        """"""
         key_pos = 0
         enc_text = ""
         K = self.edKey(self.key)
@@ -51,6 +56,7 @@ class VigenereCipher:
         return enc_text
 
     def decrypt(self):
+        """"""
         key_pos = 0
         enc_text = ""
         K = self.edKey(self.key)

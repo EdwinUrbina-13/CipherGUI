@@ -3,15 +3,18 @@ from base64 import *
 
 class base64cipher:
     def __init__(self, text):
+        """"""
         self.text = text
 
     def encrypt(self):
+        """"""
         bytes_text = bytes(self.text, 'utf-8')
         self.encode = b64encode(bytes_text)
         coded_message = self.encode.decode('utf-8')
         return coded_message
 
     def decrypt(self):
+        """"""
         self.decode = b64decode(self.text)
         message = self.decode.decode('utf-8')
         return message
